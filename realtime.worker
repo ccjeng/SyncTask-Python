@@ -1,6 +1,7 @@
 runtime "python"
 stack "python-2.7"
-pip "ParsePy"
+pip "requests"
+pip "python-firebase"
 pip "geocoder"
-exec "sync.py"
+exec "realtime.py"
 full_remote_build true
