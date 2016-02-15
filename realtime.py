@@ -1,32 +1,58 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import sys
+import logging
 import geocoder
 import requests
 from firebase import firebase
+from apscheduler.schedulers.blocking import BlockingScheduler
 
+'''
+if len(sys.argv) > 1:
+    stgTable = sys.argv[1]
+else:
+    stgTable = 'STG'
+'''
 firebase = firebase.FirebaseApplication(
     'https://tptrashcarrealtime.firebaseio.com/', None)
-
-url = 'http://data.ntpc.gov.tw/od/data/api/28AB4122-60E1-4065-98E5-ABCCB69AACA6?$format=json'
-
-response = requests.get(url)
-items = response.json()
-
-# STG
-firebase.delete('/STG', None)
-
-print('count = ' + str(len(items)))
-
-for item in items:
-    g = geocoder.google(item['location'])
-    data = {'lineid': item['lineid'], 'car': item['car'], 'address': item['location'],
-            'time': item['time'], 'lat': g.lat, 'lng': g.lng}
-    result = firebase.post('/STG', data)
-    print(item['lineid'] + ',' + str(g.lat) + ',' + str(g.lng))
+stgTable = 'STG_Heroku'
 
 
-# Copy to PROD
-firebase.delete('/PROD', None)
-stgResults = firebase.get('/STG', None)
-firebase.patch('/PROD', stgResults)
+def main():
+
+    url = 'http://data.ntpc.gov.tw/od/data/api/28AB4122-60E1-4065-98E5-ABCCB69AACA6?$format=json'
+
+    response = requests.get(url)
+    items = response.json()
+
+    # STG
+    firebase.delete(stgTable, None)
+
+    print('count = ' + str(len(items)))
+
+    for item in items:
+        g = geocoder.google(item['location'])
+        data = {'lineid': item['lineid'], 'car': item['car'], 'address': item['location'],
+                'time': item['time'], 'lat': g.lat, 'lng': g.lng}
+        result = firebase.post(stgTable, data)
+        print(item['lineid'] + ',' + str(g.lat) + ',' + str(g.lng))
+
+    # Copy to PROD
+    firebase.delete('/PROD', None)
+    stgResults = firebase.get(stgTable, None)
+    firebase.patch('/PROD', stgResults)
+
+
+main()
+
+
+sched = BlockingScheduler()
+logging.basicConfig()
+
+
+@sched.scheduled_job('interval', minutes=5)
+def timed_job():
+    main()
+
+sched.start()
