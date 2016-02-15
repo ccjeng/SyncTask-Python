@@ -8,12 +8,6 @@ import requests
 from firebase import firebase
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-'''
-if len(sys.argv) > 1:
-    stgTable = sys.argv[1]
-else:
-    stgTable = 'STG'
-'''
 firebase = firebase.FirebaseApplication(
     'https://tptrashcarrealtime.firebaseio.com/', None)
 stgTable = 'STG_Heroku'
@@ -33,19 +27,20 @@ def main():
 
     for item in items:
         g = geocoder.google(item['location'])
-        data = {'lineid': item['lineid'], 'car': item['car'], 'address': item['location'],
-                'time': item['time'], 'lat': g.lat, 'lng': g.lng}
-        result = firebase.post(stgTable, data)
+        if g.lat > 0:
+            data = {'lineid': item['lineid'], 'car': item['car'], 'address': item['location'],
+                    'time': item['time'], 'lat': g.lat, 'lng': g.lng}
+            result = firebase.post(stgTable, data)
         print(item['lineid'] + ',' + str(g.lat) + ',' + str(g.lng))
 
     # Copy to PROD
+    print('Copy to PROD')
     firebase.delete('/PROD', None)
     stgResults = firebase.get(stgTable, None)
     firebase.patch('/PROD', stgResults)
-
+    print('Done')
 
 main()
-
 
 sched = BlockingScheduler()
 logging.basicConfig()
