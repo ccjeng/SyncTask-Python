@@ -31,7 +31,8 @@ def main():
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': item['location'],
                     'time': item['time'], 'lat': g.lat, 'lng': g.lng}
             result = firebase.post(stgTable, data)
-        print(item['lineid'] + ',' + str(g.lat) + ',' + str(g.lng))
+        else:
+        	print(item['lineid'] + ',' + str(g.lat) + ',' + str(g.lng))
 
     # Copy to PROD
     print('Copy to PROD')
