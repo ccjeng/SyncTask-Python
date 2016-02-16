@@ -41,14 +41,17 @@ def main():
     firebase.patch('/PROD', stgResults)
     print('Done')
 
-main()
-
 sched = BlockingScheduler()
 logging.basicConfig()
 
 
 @sched.scheduled_job('interval', minutes=5)
 def timed_job():
-    main()
+    try:
+        main()
+    except Exception, e:
+        print(e)
+    else:
+        pass
 
 sched.start()
