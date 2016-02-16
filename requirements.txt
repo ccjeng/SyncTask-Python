@@ -2,3 +2,4 @@ requests
 python-firebase
 geocoder
 APScheduler==3.0.0
+logentries
