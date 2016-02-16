@@ -39,7 +39,7 @@ def main():
                     'time': item['time'], 'lat': g.lat, 'lng': g.lng}
             result = firebase.post(stgTable, data)
         else:
-            print(item['location'] + ',' + str(g.lat) + ',' + str(g.lng))
+            print(item['lineid'] + ',' + str(g.lat) + ',' + str(g.lng))
 
     # Copy to PROD
     print('Copy to PROD')
