@@ -31,7 +31,7 @@ def main():
         if g.lat > 0:
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': item['location'],
                     'time': item['time'], 'lat': g.lat, 'lng': g.lng}
-            result = firebase.post(stgTable, data)          
+            result = firebase.post(stgTable, data)
         else:
             print(g.json)
 
@@ -55,7 +55,5 @@ def timed_job():
         main()
     except Exception, e:
         print(e)
-    else:
-        pass
 
 sched.start()
