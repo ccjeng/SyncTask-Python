@@ -19,6 +19,8 @@ def main():
     url = 'http://data.ntpc.gov.tw/od/data/api/28AB4122-60E1-4065-98E5-ABCCB69AACA6?$format=json'
 
     response = requests.get(url)
+    print(response.encoding)
+    response.encoding = 'UTF-8'    
     items = response.json()
 
     # STG
