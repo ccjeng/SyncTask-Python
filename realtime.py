@@ -46,10 +46,10 @@ def main():
 sched = BlockingScheduler()
 logging.basicConfig()
 
-main()
+#main()
 
 
-@sched.scheduled_job('interval', minutes=5)
+@sched.scheduled_job('interval', minutes=1)
 def timed_job():
     try:
         main()
