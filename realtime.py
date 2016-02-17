@@ -27,8 +27,9 @@ def main():
     print('count = ' + str(len(items)))
 
     for item in items:
-    	print(item['location'])
-        g = geocoder.google(item['location'])
+        addr = item['location']
+
+        g = geocoder.google(addr)
         if g.lat > 0:
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': item['location'],
                     'time': item['time'], 'lat': g.lat, 'lng': g.lng}
@@ -47,7 +48,7 @@ def main():
 sched = BlockingScheduler()
 logging.basicConfig()
 
-# main()
+main()
 
 
 def err_listener(event):
@@ -60,7 +61,6 @@ sched.add_listener(
 
 @sched.scheduled_job('interval', minutes=1)
 def timed_job():
-    print('start schedule job')
     main()
 
 sched.start()
