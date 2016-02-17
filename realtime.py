@@ -3,7 +3,8 @@
 
 import sys
 import logging
-import geocoder
+# import geocoder
+from googlegeocoder import GoogleGeocoder
 import requests
 from firebase import firebase
 from apscheduler.schedulers.blocking import BlockingScheduler
@@ -27,10 +28,24 @@ def main():
 
     print('count = ' + str(len(items)))
 
+    geocoder = GoogleGeocoder()
+
     for item in items:
         addr = item['location'].encode('utf-8')
         print('location=' + addr)
+        search = geocoder.get(addr)
 
+        lat = search[0].geometry.location.lat
+        lng = search[0].geometry.location.lng
+
+        if lat > 0:
+            data = {'lineid': item['lineid'], 'car': item['car'], 'address': addr,
+                    'time': item['time'], 'lat': lat, 'lng': lng}
+            result = firebase.post(stgTable, data)
+        else:
+            print(search)
+
+        '''
         g = geocoder.google(addr)
         if g.lat > 0:
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': addr,
@@ -38,6 +53,7 @@ def main():
             result = firebase.post(stgTable, data)
         else:
             print(g.json)
+        '''
 
     # Copy to PROD
     print('Copy to PROD')
