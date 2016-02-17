@@ -19,8 +19,7 @@ def main():
     url = 'http://data.ntpc.gov.tw/od/data/api/28AB4122-60E1-4065-98E5-ABCCB69AACA6?$format=json'
 
     response = requests.get(url)
-    print(response.encoding)
-    response.encoding = 'UTF-8'    
+    response.encoding = 'UTF-8'
     items = response.json()
 
     # STG
@@ -29,12 +28,12 @@ def main():
     print('count = ' + str(len(items)))
 
     for item in items:
-        addr = item['location']
+        addr = unicode(item['location'])
         print('location=' + addr)
 
         g = geocoder.google(addr)
         if g.lat > 0:
-            data = {'lineid': item['lineid'], 'car': item['car'], 'address': item['location'],
+            data = {'lineid': item['lineid'], 'car': item['car'], 'address': addr,
                     'time': item['time'], 'lat': g.lat, 'lng': g.lng}
             result = firebase.post(stgTable, data)
         else:
