@@ -1,7 +1,0 @@
-runtime "python"
-stack "python-2.7"
-pip "requests"
-pip "python-firebase"
-pip "geocoder"
-exec "realtime.py"
-full_remote_build true
