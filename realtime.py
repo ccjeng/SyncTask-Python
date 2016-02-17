@@ -7,6 +7,7 @@ import geocoder
 import requests
 from firebase import firebase
 from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler import events
 import logging
 
 firebase = firebase.FirebaseApplication(
@@ -48,9 +49,17 @@ logging.basicConfig()
 # main()
 
 
+def err_listener(event):
+    print('%s' % (event))
+
+
+sched.add_listener(
+    err_listener, events.EVENT_SCHEDULER_START | events.EVENT_JOB_ERROR | events.EVENT_JOB_MISSED)
+
+
 @sched.scheduled_job('interval', minutes=1)
 def timed_job():
-	print('start schedule job')
-	main()
+    print('start schedule job')
+    main()
 
 sched.start()
