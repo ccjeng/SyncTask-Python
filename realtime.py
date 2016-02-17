@@ -29,6 +29,7 @@ def main():
 
     for item in items:
         addr = item['location'].encode('utf-8')
+        addr = 'Mountain View, CA'
         print('location=' + addr)
 
         g = geocoder.google(addr)
@@ -36,6 +37,7 @@ def main():
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': addr,
                     'time': item['time'], 'lat': g.lat, 'lng': g.lng}
             result = firebase.post(stgTable, data)
+            print(g.json)
         else:
             print(g.json)
 
