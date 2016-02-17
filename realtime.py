@@ -28,6 +28,7 @@ def main():
 
     for item in items:
         addr = item['location']
+        print('location=' + addr)
 
         g = geocoder.google(addr)
         if g.lat > 0:
