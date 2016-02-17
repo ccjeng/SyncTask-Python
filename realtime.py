@@ -28,10 +28,10 @@ def main():
     print('count = ' + str(len(items)))
 
     for item in items:
-        addr = unicode(item['location'])
-        print('location=' + addr)
+        addr = item['location']
+        print('location=' + addr.encode('utf-8'))
 
-        g = geocoder.google(addr)
+        g = geocoder.google(addr.encode('utf-8'))
         if g.lat > 0:
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': addr,
                     'time': item['time'], 'lat': g.lat, 'lng': g.lng}
