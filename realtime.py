@@ -27,6 +27,7 @@ def main():
     print('count = ' + str(len(items)))
 
     for item in items:
+    	print(item['location'])
         g = geocoder.google(item['location'])
         if g.lat > 0:
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': item['location'],
