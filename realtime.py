@@ -3,7 +3,6 @@
 
 import sys
 import logging
-# import geocoder
 from googlegeocoder import GoogleGeocoder
 import requests
 from firebase import firebase
@@ -32,7 +31,6 @@ def main():
 
     for item in items:
         addr = item['location'].encode('utf-8')
-        print('location=' + addr)
         search = geocoder.get(addr)
 
         lat = search[0].geometry.location.lat
@@ -45,15 +43,6 @@ def main():
         else:
             print(search)
 
-        '''
-        g = geocoder.google(addr)
-        if g.lat > 0:
-            data = {'lineid': item['lineid'], 'car': item['car'], 'address': addr,
-                    'time': item['time'], 'lat': g.lat, 'lng': g.lng}
-            result = firebase.post(stgTable, data)
-        else:
-            print(g.json)
-        '''
 
     # Copy to PROD
     print('Copy to PROD')
@@ -66,7 +55,7 @@ def main():
 sched = BlockingScheduler()
 logging.basicConfig()
 
-main()
+# main()
 
 
 def err_listener(event):
@@ -77,7 +66,7 @@ sched.add_listener(
     err_listener, events.EVENT_SCHEDULER_START | events.EVENT_JOB_ERROR | events.EVENT_JOB_MISSED)
 
 
-@sched.scheduled_job('interval', minutes=1)
+@sched.scheduled_job('interval', minutes=5)
 def timed_job():
     main()
 
