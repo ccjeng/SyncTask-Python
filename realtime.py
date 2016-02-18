@@ -54,7 +54,7 @@ def main():
 sched = BlockingScheduler()
 logging.basicConfig()
 
-main()
+#main()
 
 
 def err_listener(event):
