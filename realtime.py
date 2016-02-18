@@ -42,7 +42,7 @@ def main():
             result = firebase.post(stgTable, data)
         else:
             print(search)
-        time.sleep(1)
+        time.sleep(0.5)
 
     # Copy to PROD
     print('Copy to PROD')
