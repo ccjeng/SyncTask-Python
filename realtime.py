@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import time
 import sys
 import logging
 from googlegeocoder import GoogleGeocoder
@@ -41,6 +42,7 @@ def main():
             result = firebase.post(stgTable, data)
         else:
             print(search)
+        time.sleep(800)
 
     # Copy to PROD
     print('Copy to PROD')
