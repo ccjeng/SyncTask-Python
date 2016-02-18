@@ -53,7 +53,7 @@ def main():
 sched = BlockingScheduler()
 logging.basicConfig()
 
-#main()
+main()
 
 
 def err_listener(event):
@@ -64,7 +64,7 @@ sched.add_listener(
     err_listener, events.EVENT_SCHEDULER_START | events.EVENT_JOB_ERROR | events.EVENT_JOB_MISSED)
 
 
-@sched.scheduled_job('interval', minutes=4)
+@sched.scheduled_job('interval', minutes=5)
 def timed_job():
     main()
 
