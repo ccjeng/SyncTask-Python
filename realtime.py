@@ -30,7 +30,7 @@ def main():
     geocoder = GoogleGeocoder()
 
     for item in items:
-        addr = item['location'].encode('utf-8')
+        addr = item['location']
         search = geocoder.get(addr)
 
         lat = search[0].geometry.location.lat
@@ -43,7 +43,6 @@ def main():
         else:
             print(search)
 
-
     # Copy to PROD
     print('Copy to PROD')
     firebase.delete('/PROD', None)
@@ -55,7 +54,7 @@ def main():
 sched = BlockingScheduler()
 logging.basicConfig()
 
-# main()
+main()
 
 
 def err_listener(event):
@@ -66,7 +65,7 @@ sched.add_listener(
     err_listener, events.EVENT_SCHEDULER_START | events.EVENT_JOB_ERROR | events.EVENT_JOB_MISSED)
 
 
-@sched.scheduled_job('interval', minutes=5)
+@sched.scheduled_job('interval', minutes=4)
 def timed_job():
     main()
 
