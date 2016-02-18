@@ -8,7 +8,6 @@ import requests
 from firebase import firebase
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler import events
-import logging
 
 firebase = firebase.FirebaseApplication(
     'https://tptrashcarrealtime.firebaseio.com/', None)
