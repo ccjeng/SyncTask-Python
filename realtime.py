@@ -31,7 +31,7 @@ def main():
         addr = item['location']
         g = geocoder.google(addr)
 
-        if g.lat > 0:
+        if not (str(g.lat) is None):
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': addr,
                     'time': item['time'], 'lat': g.lat, 'lng': g.lng}
             result = firebase.post(stgTable, data)
