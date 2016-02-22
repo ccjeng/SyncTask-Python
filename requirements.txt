@@ -1,4 +1,4 @@
 requests
 python-firebase
-python-googlegeocoder
+geocoder
 APScheduler==3.0.0
