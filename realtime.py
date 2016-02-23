@@ -30,9 +30,10 @@ def main():
     for item in items:
         addr = item['location']
         g = geocoder.google(addr)
-        print(g.json)
+        # print(g.json)
 
-        if not (str(g.lat) is None):
+        # if not (str(g.lat) is None):
+        if g.lat > 0:
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': addr,
                     'time': item['time'], 'lat': g.lat, 'lng': g.lng}
             result = firebase.post(stgTable, data)
@@ -64,6 +65,9 @@ sched.add_listener(
 
 @sched.scheduled_job('interval', minutes=5)
 def timed_job():
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
 
 sched.start()
