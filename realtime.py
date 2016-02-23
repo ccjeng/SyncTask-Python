@@ -30,6 +30,7 @@ def main():
     for item in items:
         addr = item['location']
         g = geocoder.google(addr)
+        print(g.json)
 
         if not (str(g.lat) is None):
             data = {'lineid': item['lineid'], 'car': item['car'], 'address': addr,
